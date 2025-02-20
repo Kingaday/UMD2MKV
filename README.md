@@ -1,2 +1,2 @@
 # UMD2MKV
-Convert a UMD movie iso to a MKV file (video,audio,subs)
+Convert a PSP UMD movie iso file to a MKV file (video,audio,subs)
