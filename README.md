@@ -38,7 +38,7 @@ https://www.reddit.com/r/PSP/comments/n7t7co/my_quest_to_rip_a_psp_umd_movie/
 Extracting mps stream from UMD iso file using DiscUtils:  
 https://github.com/DiscUtils/DiscUtils   
 
-Demuxing audio streams and subtitles based on VGMToolbox code (reduced and cleaned up):  
+Demuxing audio streams and subtitles based on VGMToolbox code (reduced/cleaned up/modernized):  
 https://github.com/Manicsteiner/VGMToolbox  
 
 Extracting PNG files from subtitle files based on:  
