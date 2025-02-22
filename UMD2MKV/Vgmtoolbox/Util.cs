@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace VGMToolbox.util
+namespace UMD2MKV.VGMToolbox
 {    
     /// <summary>
     /// Class for Parsing Files.
@@ -87,17 +87,17 @@ namespace VGMToolbox.util
 
             var itemFound = false;
             var absoluteOffset = startingOffset;
-            var checkBytes = new byte[Constants.FileReadChunkSize];
+            var checkBytes = new byte[Constants.fileReadChunkSize];
 
             long ret = -1;
 
             while (!itemFound && (absoluteOffset < stream.Length))
             {
                 stream.Position = absoluteOffset;
-                stream.ReadExactly(checkBytes, 0, Constants.FileReadChunkSize);
+                stream.ReadExactly(checkBytes, 0, Constants.fileReadChunkSize);
                 long relativeOffset = 0;
 
-                while (!itemFound && (relativeOffset < Constants.FileReadChunkSize))
+                while (!itemFound && (relativeOffset < Constants.fileReadChunkSize))
                 {
                     if ((relativeOffset + searchBytes.Length) < checkBytes.Length)
                     {
@@ -115,7 +115,7 @@ namespace VGMToolbox.util
                     relativeOffset++;
                 }
 
-                absoluteOffset += Constants.FileReadChunkSize - searchBytes.Length;
+                absoluteOffset += Constants.fileReadChunkSize - searchBytes.Length;
             }
 
             // return stream to incoming position
@@ -135,13 +135,13 @@ namespace VGMToolbox.util
                 initialStreamPosition = stream.Position;
 
             var absoluteOffset = startingOffset;
-            var checkBytes = new byte[Constants.FileReadChunkSize];
+            var checkBytes = new byte[Constants.fileReadChunkSize];
             var offsetList = new ArrayList();
 
             while (absoluteOffset < stream.Length)
             {
                 stream.Position = absoluteOffset;
-                var checkBytesRead = stream.Read(checkBytes, 0, Constants.FileReadChunkSize);
+                var checkBytesRead = stream.Read(checkBytes, 0, Constants.fileReadChunkSize);
                 long relativeOffset = 0;
 
                 while (relativeOffset < checkBytesRead)
@@ -164,7 +164,7 @@ namespace VGMToolbox.util
                     relativeOffset++;
                 }
 
-                absoluteOffset += Constants.FileReadChunkSize - searchBytes.Length;
+                absoluteOffset += Constants.fileReadChunkSize - searchBytes.Length;
             }
 
             // return stream to incoming position
@@ -270,7 +270,7 @@ namespace VGMToolbox.util
 
                 int read;
                 long totalBytes = 0;
-                var bytes = new byte[Constants.FileReadChunkSize];
+                var bytes = new byte[Constants.fileReadChunkSize];
                 stream.Seek(startingOffset, SeekOrigin.Begin);
 
                 var maxread = length > bytes.Length ? bytes.Length : (int)length;
@@ -294,7 +294,7 @@ namespace VGMToolbox.util
             var newValueOffset = currentOffset + Byteconversion.GetLongValueFromString(offsetInfo.OffsetValue);
             var newValueLength = Byteconversion.GetLongValueFromString(offsetInfo.OffsetSize);
 
-            return GetVaryingByteValueAtOffset(inStream, newValueOffset, newValueLength, offsetInfo.OffsetByteOrder.Equals(Constants.LittleEndianByteOrder));
+            return GetVaryingByteValueAtOffset(inStream, newValueOffset, newValueLength, offsetInfo.OffsetByteOrder.Equals(Constants.littleEndianByteOrder));
         }
 
         private static long GetVaryingByteValueAtOffset(Stream inStream, long valueOffset, long valueLength,

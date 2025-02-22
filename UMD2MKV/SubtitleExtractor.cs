@@ -1,6 +1,4 @@
-using VGMToolbox.format;
-using VGMToolbox.util;
-using Xabe.FFmpeg;
+using UMD2MKV.VGMToolbox;
 
 namespace UMD2MKV;
 

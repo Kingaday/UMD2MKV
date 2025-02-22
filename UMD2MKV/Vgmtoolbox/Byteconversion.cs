@@ -1,4 +1,4 @@
-namespace VGMToolbox.util
+namespace UMD2MKV.VGMToolbox
 {    
     public static class Byteconversion
     {

@@ -1,8 +1,8 @@
-namespace VGMToolbox.format
+namespace UMD2MKV.VGMToolbox
 {
     public static class Atrac3Plus
     {
-        public const string FileExtensionPsp = ".oma";
+        public const string fileExtensionPsp = ".oma";
 
         private static readonly byte[] Aa3HeaderChunk =
         [

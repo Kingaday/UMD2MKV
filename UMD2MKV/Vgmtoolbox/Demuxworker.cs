@@ -1,6 +1,4 @@
-using VGMToolbox.format;
-
-namespace VGMToolbox
+namespace UMD2MKV.VGMToolbox
 {
     public abstract class MpegDemuxWorker
     {                

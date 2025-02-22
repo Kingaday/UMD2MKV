@@ -1,4 +1,4 @@
-namespace VGMToolbox.format
+namespace UMD2MKV.VGMToolbox
 {
     public class SonyPspMpsStream : Sonypmfstream
     {
