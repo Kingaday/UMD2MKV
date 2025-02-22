@@ -1,6 +1,4 @@
-using VGMToolbox.util;
-
-namespace VGMToolbox.format
+namespace UMD2MKV.VGMToolbox
 {
     public abstract class Mpegstream
     {
@@ -41,14 +39,14 @@ namespace VGMToolbox.format
 
         public struct DemuxOptionsStruct
         {            
-            public bool ExtractVideo { set; get; }
-            public bool ExtractAudio { set; get; }
-            public bool AddHeader { set; get; }
+            public bool ExtractVideo { init; get; }
+            public bool ExtractAudio { init; get; }
+            public bool AddHeader { init; get; }
         }
 
         #region Dictionary Initialization
 
-        protected Dictionary<uint, BlockSizeStruct> BlockIdDictionary =
+        protected readonly Dictionary<uint, BlockSizeStruct> BlockIdDictionary =
             new()
             {                                                
                 //********************
@@ -120,10 +118,10 @@ namespace VGMToolbox.format
         #endregion
 
         private string FilePath { get; set; }
-        protected string FileExtensionAudio { get; set; }
+        protected string FileExtensionAudio { get; init; }
         protected string FileExtensionVideo { get; set; }
-        protected Dictionary<byte, string> StreamIdFileType = new();
-        protected bool UsesSameIdForMultipleAudioTracks { set; get; } // for PMF/PAM/DVD, who use 000001BD for all audio tracks
+        protected readonly Dictionary<byte, string> StreamIdFileType = new();
+        protected bool UsesSameIdForMultipleAudioTracks { init; get; } // for PMF/PAM/DVD, who use 000001BD for all audio tracks
         public bool SubTitleExtractionSupported { set; get; } // assume not supported.
         private bool BlockSizeIsLittleEndian { set; get; }
         private static byte[] GetPacketStartBytes() { return PacketStartBytes; }
@@ -137,22 +135,14 @@ namespace VGMToolbox.format
             return ((blockToCheck[3] >= 0xC0) && 
                     (blockToCheck[3] <= 0xDF));
         }
-        protected virtual bool IsThisAVideoBlock(byte[] blockToCheck)
-        {
-            return ((blockToCheck[3] >= 0xE0) && (blockToCheck[3] <= 0xEF));
-        }
-        protected virtual bool IsThisASubPictureBlock(byte[] blockToCheck)
-        {
-            return ((blockToCheck[3] >= 0xE0) && (blockToCheck[3] <= 0xEF));
-        }
+        protected virtual bool IsThisAVideoBlock(byte[] blockToCheck) => ((blockToCheck[3] >= 0xE0) && (blockToCheck[3] <= 0xEF));
+        protected virtual bool IsThisASubPictureBlock(byte[] blockToCheck) => ((blockToCheck[3] >= 0xE0) && (blockToCheck[3] <= 0xEF));
         protected virtual string GetAudioFileExtension(Stream readStream, long currentOffset)=>FileExtensionAudio;
         protected virtual string GetVideoFileExtension(Stream readStream, long currentOffset)=>FileExtensionVideo;
         protected virtual byte GetStreamId(Stream readStream, long currentOffset) => 0;
-
         protected virtual long GetStartOffset(Stream readStream, long currentOffset) =>0;
-
         protected virtual void DoFinalTasks(Stream sourceFileStream, Dictionary<uint, FileStream> outputFiles, bool addHeader,IProgress<int>? progress = null) { }
-        public virtual async Task<bool> DemultiplexStreams(DemuxOptionsStruct demuxOptions, string outputDirectory, IProgress<int>? progress = null)
+        public async Task<bool> DemultiplexStreams(DemuxOptionsStruct demuxOptions, string outputDirectory, IProgress<int>? progress = null)
         {
             await using var fs = File.OpenRead(FilePath);
             var fileSize = fs.Length;

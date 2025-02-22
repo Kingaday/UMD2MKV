@@ -1,6 +1,4 @@
-using VGMToolbox.util;
-
-namespace VGMToolbox.format
+namespace UMD2MKV.VGMToolbox
 {
     public class Sonypmfstream : Mpeg2Stream
     {
@@ -35,16 +33,14 @@ namespace VGMToolbox.format
             var seekCount = Byteconversion.GetUInt32BigEndian(ParseFile.ParseSimpleOffset(readStream, 0x8A, 4));
 
             if (seekOffsets > 0)
-            {
                 startOffset = seekOffsets + (seekCount * 0x0A);
-            }
 
             return startOffset;
         }
 
         protected override int GetAudioPacketHeaderSize(Stream readStream, long currentOffset)
         {            
-            var od = new OffsetDescription(offsetByteOrder: Constants.BigEndianByteOrder, offsetSize: "1", offsetValue: "8");
+            var od = new OffsetDescription(offsetByteOrder: Constants.bigEndianByteOrder, offsetSize: "1", offsetValue: "8");
             var checkBytes = (byte)ParseFile.GetVaryingByteValueAtRelativeOffset(readStream, od, currentOffset);
             return checkBytes + 7;           
         }
@@ -119,7 +115,7 @@ namespace VGMToolbox.format
                     {
                         Array.Reverse(headerBytes);
                         var headerBlock = BitConverter.ToUInt32(headerBytes, 4);
-                        var headeredFile = Path.ChangeExtension(sourceFile, Atrac3Plus.FileExtensionPsp);
+                        var headeredFile = Path.ChangeExtension(sourceFile, Atrac3Plus.fileExtensionPsp);
                         var aa3HeaderBytes = Atrac3Plus.GetAa3Header(headerBlock);
                         Fileutil.AddHeaderToFile(aa3HeaderBytes, sourceFile, headeredFile);
                         File.Delete(sourceFile);

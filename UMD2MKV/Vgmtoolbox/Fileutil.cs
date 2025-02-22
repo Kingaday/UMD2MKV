@@ -1,4 +1,4 @@
-namespace VGMToolbox.util
+namespace UMD2MKV.VGMToolbox
 {
     public static class Fileutil
     {
@@ -11,7 +11,7 @@ namespace VGMToolbox.util
             int maxReadSize;
             long currentChunkSize;
 
-            var bytes = new byte[Constants.FileReadChunkSize];
+            var bytes = new byte[Constants.fileReadChunkSize];
             var offsets = ParseFile.GetAllOffsets(fs, 0, chunkToRemove, false, -1, -1, true);
 
             var destinationPath = Path.ChangeExtension(fs.Name, ".cut");
@@ -82,7 +82,7 @@ namespace VGMToolbox.util
         public static void AddHeaderToFile(byte[] headerBytes, string sourceFile, string destinationFile)
         {
             int bytesRead;
-            var readBuffer = new byte[Constants.FileReadChunkSize];
+            var readBuffer = new byte[Constants.fileReadChunkSize];
 
             using var destinationStream = File.Open(destinationFile, FileMode.CreateNew, FileAccess.Write);
             // write header

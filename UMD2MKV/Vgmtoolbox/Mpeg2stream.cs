@@ -1,6 +1,4 @@
-using VGMToolbox.util;
-
-namespace VGMToolbox.format
+namespace UMD2MKV.VGMToolbox
 {
     public class Mpeg2Stream : Mpegstream
     {
@@ -17,7 +15,7 @@ namespace VGMToolbox.format
         }
         private static int GetStandardPesHeaderSize(Stream readStream, long currentOffset)
         {
-            var od = new OffsetDescription(offsetByteOrder: Constants.BigEndianByteOrder, offsetSize: "1", offsetValue: "8");
+            var od = new OffsetDescription(offsetByteOrder: Constants.bigEndianByteOrder, offsetSize: "1", offsetValue: "8");
 
             var checkBytes = (byte)ParseFile.GetVaryingByteValueAtRelativeOffset(readStream, od, currentOffset);
 
