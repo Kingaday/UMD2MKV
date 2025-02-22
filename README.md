@@ -6,7 +6,7 @@
 
 Julian, a friend of mine makes comparison videos on youtube exploring the picture quality differences between different home video releases.
 You can find his work on : https://www.youtube.com/@JulianDeBacker  
-Besides dvd's, (4K) bluray's, laserdiscs, vhs tapes, ... he also asseses the quality of UMD video releases.
+Besides dvd's, (4K) bluray's, laserdiscs, vhs tapes, ... he also assesses the quality of UMD video releases.
 Where possible he tries to use the cleanest copy for this "fair use" purpose so direct digital copies are preferred.
 His focus is not on technical processes so this is where UMD2MKV comes into play.
 Without the need to know about several tools and technical jargon he can now easily extract scenes from UMD movies.
@@ -16,7 +16,7 @@ Without the need to know about several tools and technical jargon he can now eas
 1. Select an ISO file of the UMD movie you want to convert.
    (You will need access to a PSP with a custom firmware, place your favourite movie in the UMD drive, press the option button and set USB to UMD, connect your psp via USB to your PC and a new drive should pop up containing the ISO)
 2. Select an output/working directory. This needs to be an empty folder!
-3. If you only want to export a scene or segment of the movie check the "select" segment checkbox and fill in the start and end time. (following the format of hours:minutes:seconds)
+3. If you only want to export a scene or segment of the movie check the "select segment" checkbox and fill in the start and end time. (following the format of hours:minutes:seconds)
 4. Choose how you want the audio to be transcoded. ACC for lossy compression, FLAC for lossles.
 5. Push the "Convert ISO to MKV button" and wait a few minutes. (on my macbook air m3 it takes approximately 3 minutes for a typical movie)
 
