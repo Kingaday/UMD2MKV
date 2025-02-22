@@ -26,6 +26,7 @@ Exporting subtitles is a work in progess.
 I am able to export all of the PNG's in the subtitle stream but I'm having issues with finding timing information.
 Once this has been tackled the goal is to use OCR on the PNG's and to add standard .srt files in the MKV.
 If you currently check the "Handle" subtitles checkbox it will dump the PNG's for each language and attempt to create the timings file.
+If you can help in making sense of the binary structure of the psp subs files please contact me :) 
 
 ## Releases:
 No binaries yet ... coming soon for windows X64 , windows ARM64, MAC X64, MAC ARM
