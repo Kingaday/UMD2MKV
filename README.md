@@ -4,7 +4,7 @@
 
 ## Rationale:
 
-Julian, a friend of mine makes comparison videos on youtube exploring the picture quality differences between different home video releases.
+Julian, a friend of mine produces comparison videos on youtube exploring the picture quality differences between different home video releases.
 You can find his work on : https://www.youtube.com/@JulianDeBacker  
 Besides dvd's, (4K) bluray's, laserdiscs, vhs tapes, ... he also assesses the quality of UMD video releases.
 Where possible he tries to use the cleanest copy for this "fair use" purpose so direct digital copies are preferred.
