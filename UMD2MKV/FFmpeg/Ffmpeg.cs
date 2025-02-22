@@ -8,7 +8,7 @@ public static class Ffmpeg
     public static async Task<bool> ConvertOma(List<string?>? inputFiles, string outputDirectory,bool lossy, CancellationToken cancellationToken,IProgress<int>? progress = null)
     {
 #if WINDOWS
-           FFmpeg.SetExecutablesPath(GetFfmpegPath());
+           Xabe.FFmpeg.FFmpeg.SetExecutablesPath(GetFfmpegPath());
 #endif
         if (inputFiles == null || inputFiles.Count == 0) return false;
         foreach (var inputFile in inputFiles)
@@ -61,7 +61,7 @@ public static class Ffmpeg
     public static async Task<bool> MergeMpsWithFlacAsync(string? videoPath, List<string?>? audioPaths, string outputPath, bool segment, TimeSpan startTime, TimeSpan endTime,IProgress<int>? progress = null )
     {
 #if WINDOWS
-           FFmpeg.SetExecutablesPath(GetFfmpegPath());
+           Xabe.FFmpeg.FFmpeg.SetExecutablesPath(GetFfmpegPath());
 #endif
         if (string.IsNullOrWhiteSpace(videoPath) || audioPaths == null || audioPaths.Count == 0)
             return false;
