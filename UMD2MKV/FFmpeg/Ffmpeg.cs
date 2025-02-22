@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using Xabe.FFmpeg;
 
-namespace UMD2MKV.FfmpegService;
+namespace UMD2MKV.FFmpeg;
 
 public static class Ffmpeg
 {
@@ -14,7 +14,7 @@ public static class Ffmpeg
             if (lossy)
             {
                 var outputFile = Path.Combine(outputDirectory, $"{fileNameWithoutExtension}.aac");
-                var conversion = FFmpeg.Conversions.New().AddParameter($"-i \"{inputFile}\" -c:a aac \"{outputFile}\"");
+                var conversion = Xabe.FFmpeg.FFmpeg.Conversions.New().AddParameter($"-i \"{inputFile}\" -c:a aac \"{outputFile}\"");
                 conversion.OnProgress += (_, args) => { progress?.Report(args.Percent); };
                 try
                 {
@@ -28,7 +28,7 @@ public static class Ffmpeg
             else
             {
                 var outputFile = Path.Combine(outputDirectory, $"{fileNameWithoutExtension}.flac");
-                var conversion = FFmpeg.Conversions.New().AddParameter($"-i \"{inputFile}\" -c:a flac \"{outputFile}\"");
+                var conversion = Xabe.FFmpeg.FFmpeg.Conversions.New().AddParameter($"-i \"{inputFile}\" -c:a flac \"{outputFile}\"");
                 conversion.OnProgress += (_, args) => { progress?.Report(args.Percent); };
                 try
                 {
@@ -62,16 +62,16 @@ public static class Ffmpeg
         if (!File.Exists(videoPath) || audioPaths.Any(ap => !File.Exists(ap)))
             return false;
         var outputFilePath = Path.Combine(outputPath, "movie.mkv");
-        var mediaInfo = await FFmpeg.GetMediaInfo(videoPath);
+        var mediaInfo = await Xabe.FFmpeg.FFmpeg.GetMediaInfo(videoPath);
         var videoStream = mediaInfo.VideoStreams.FirstOrDefault();
-        var conversion = FFmpeg.Conversions.New()
+        var conversion = Xabe.FFmpeg.FFmpeg.Conversions.New()
             .AddStream(videoStream?.SetCodec(VideoCodec.copy))
             .SetOutput(outputFilePath)
             .SetOutputFormat(Format.matroska);
         var ordered = audioPaths.Order(); //make sure audio streams are in same order as on psp
         foreach (var audioPath in ordered)
         {
-            var audioInfo = await FFmpeg.GetMediaInfo(audioPath);
+            var audioInfo = await Xabe.FFmpeg.FFmpeg.GetMediaInfo(audioPath);
             var audioStream = audioInfo.AudioStreams.FirstOrDefault();
             if (audioStream != null)
                 conversion.AddStream(audioStream.SetCodec(AudioCodec.copy));
@@ -113,11 +113,10 @@ public static class Ffmpeg
     {
         var baseDir = Directory.GetCurrentDirectory();
 #if WINDOWS
-        return Path.Combine(baseDir, "FFmpeg", "win-x64");
+          return Path.Combine(baseDir, "FFmpeg", "win-x64");
 #elif MACCATALYST
         var arch = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "macos-arm64" : "macos-x64";
         arch = Path.Combine(baseDir, "FFmpeg", arch);
-        arch = arch.Replace("/UMDRIP.app", "/UMDRIP.app/Contents/Resources");
         return arch;
 #else
         throw new PlatformNotSupportedException("FFmpeg bundling is only set up for Windows & Mac Catalyst.");

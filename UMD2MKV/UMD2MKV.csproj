@@ -70,31 +70,27 @@
       <Folder Include="FFmpeg\win-x64\" />
     </ItemGroup>
 
-    <ItemGroup>
-      <None Remove="FFmpeg\macos-x64\ffmpeg" />
-      <Content Include="FFmpeg\macos-x64\ffmpeg">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="FFmpeg\win-x64\ffmpeg.exe" />
-      <Content Include="FFmpeg\win-x64\ffmpeg.exe">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="FFmpeg\macos-arm64\ffmpeg" />
-      <Content Include="FFmpeg\macos-arm64\ffmpeg">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="FFmpeg\macos-arm64\ffprobe" />
-      <Content Include="FFmpeg\macos-arm64\ffprobe">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="FFmpeg\macos-x64\ffprobe" />
-      <Content Include="FFmpeg\macos-x64\ffprobe">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="FFmpeg\win-x64\ffprobe.exe" />
-      <Content Include="FFmpeg\win-x64\ffprobe.exe">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+    <Target Name="_CopyFilesToBundle" AfterTargets="Build" Condition="$(TargetFramework.Contains('maccatalyst'))">
+        <!-- Copy files -->
+        <Copy SourceFiles="FFmpeg/macos-x64/ffmpeg"
+              DestinationFolder="$(OutputPath)/maccatalyst-x64/$(MSBuildProjectName).app/Contents/MonoBundle/" />
+        <Copy SourceFiles="FFmpeg/macos-x64/ffprobe"
+              DestinationFolder="$(OutputPath)/maccatalyst-x64/$(MSBuildProjectName).app/Contents/MonoBundle/" />
+        <Copy SourceFiles="FFmpeg/macos-arm64/ffmpeg"
+              DestinationFolder="$(OutputPath)/maccatalyst-arm64/$(MSBuildProjectName).app/Contents/MonoBundle/" />
+        <Copy SourceFiles="FFmpeg/macos-arm64/ffprobe"
+              DestinationFolder="$(OutputPath)/maccatalyst-arm64/$(MSBuildProjectName).app/Contents/MonoBundle/" />
+    </Target>
+
+    <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+        <None Remove="FFmpeg\win-x64\ffmpeg.exe" />
+        <Content Include="FFmpeg\win-x64\ffmpeg.exe">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="FFmpeg\win-x64\ffprobe.exe" />
+        <Content Include="FFmpeg\win-x64\ffprobe.exe">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>
