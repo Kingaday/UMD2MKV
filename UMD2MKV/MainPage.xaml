@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="UMD2MKV.MainPage">
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,10"
+            Spacing="25">
+            <Entry x:Name="IsoPath" HorizontalOptions="Fill" IsEnabled="False"/>
+            <Button
+                x:Name="IsoBtn"
+                Text="Select UMD ISO" 
+                SemanticProperties.Hint="Select UMD ISO"
+                Clicked="OnISOSelectClicked"
+                HorizontalOptions="Fill"
+                IsEnabled="{Binding UiEnabled}"/>
+            <Entry x:Name="OutputPath" HorizontalOptions="Fill" IsEnabled="False"/>
+            <Button
+                x:Name="OutputBtn"
+                Text="Select output/working directory" 
+                SemanticProperties.Hint="Select output/working directory"
+                Clicked="OnOutputSelectClicked"
+                HorizontalOptions="Fill"
+                IsEnabled="{Binding UiEnabled}"/>
+            <HorizontalStackLayout Padding="0,0" Spacing="5">
+                 <Label Text="Handle subtitles? (experimental)" VerticalOptions="Center"/>
+                <CheckBox x:Name="SubtitletChk" IsChecked="false" VerticalOptions="Center" IsEnabled="{Binding UiEnabled}"/>
+                 <Label Text="Select segment?" VerticalOptions="Center"/>
+                 <CheckBox x:Name="SegmentChk" IsChecked="false" VerticalOptions="Center" IsEnabled="{Binding UiEnabled}"/>
+            </HorizontalStackLayout>
+            <Label Text="Start time of the segment (hours:minutes:seconds  example 00:02:00):" IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}"/>
+            <Entry x:Name="StartTime" Placeholder="hh:mm:ss" Keyboard="Numeric"  IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" HorizontalOptions="Fill" IsEnabled="{Binding UiEnabled}">
+                 <Entry.Behaviors>
+                     <toolkit:MaskedBehavior Mask="XX:XX:XX" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label Text="End time of the segment (hours:minutes:seconds  example 00:06:00):" IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" IsEnabled="{Binding UiEnabled}"/>
+            <Entry x:Name="EndTime" Placeholder="hh:mm:ss" Keyboard="Numeric"  IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" HorizontalOptions="Fill">
+                <Entry.Behaviors>
+                    <toolkit:MaskedBehavior Mask="XX:XX:XX" />
+                </Entry.Behaviors>
+            </Entry>
+            <VerticalStackLayout>
+
+                <Label Text="Choose an Audio Codec:"/>
+
+                <RadioButton x:Name="AacRadioButton"
+                             Content="AAC (Lossy - Smaller Files - Best Compatibility)"
+                             GroupName="CodecGroup"
+                             IsChecked="True"
+                             CheckedChanged="OnCodecChanged" IsEnabled="{Binding UiEnabled}" />
+                <RadioButton x:Name="FlacRadioButton"
+                             Content="FLAC (Lossless - Larger Files - Best Quality)"
+                             GroupName="CodecGroup"
+                             CheckedChanged="OnCodecChanged" IsEnabled="{Binding UiEnabled}" />
+            </VerticalStackLayout>
+            <Button
+                x:Name="ConvertBtn"
+                Text="Convert ISO to MKV" 
+                SemanticProperties.Hint="Convert ISO to MKV"
+                Clicked="OnConvertClicked"
+                HorizontalOptions="Fill"
+                IsEnabled="{Binding IsConvertButtonEnabled}"/>
+            <Label x:Name="ProgressTxt" Text="Progress"/>
+            <ProgressBar x:Name="ProgressBar" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
