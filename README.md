@@ -12,7 +12,7 @@ His focus is not on technical processes so this is where UMD2MKV comes into play
 Without the need to know about several tools and technical jargon he can now easily extract scenes from UMD movies.
 
 ## Usage:
-
+1. Download the zip release and extract the content. Double click the UMD2MKV executable file.
 1. Select an ISO file of the UMD movie you want to convert.
    (You will need access to a PSP with a custom firmware, place your favourite movie in the UMD drive, press the option button and set USB to UMD, connect your psp via USB to your PC and a new drive should pop up containing the ISO)
 2. Select an output/working directory. This needs to be an empty folder!
@@ -22,14 +22,15 @@ Without the need to know about several tools and technical jargon he can now eas
 
 ## Known issues:
 
-Exporting subtitles is a work in progess.
+1. The UI was thrown together very quickly, will try to improve in later versions.
+2. Exporting subtitles is a work in progess.
 I am able to export all of the PNG's in the subtitle stream but I'm having issues with finding timing information.
 Once this has been tackled the goal is to use OCR on the PNG's and to add standard .srt files in the MKV.
 If you currently check the "Handle" subtitles checkbox it will dump the PNG's for each language and attempt to create the timings file.
 If you can help in making sense of the binary structure of the psp subs files please contact me :) 
 
 ## Releases:
-No binaries yet ... coming soon for windows X64 , windows ARM64, MAC X64, MAC ARM
+Only win X64 release for now. Mac releases will come soon.
 
 ## References:
 Idea/general process needed to do the conversion coming from:  
