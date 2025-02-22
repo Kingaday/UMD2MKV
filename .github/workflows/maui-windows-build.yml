@@ -27,7 +27,7 @@ jobs:
         run: dotnet build -c Release -f net9.0-windows10.0.19041.0
         
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: maui-windows-build
           path: bin/Release/net9.0-windows10.0.19041.0/
