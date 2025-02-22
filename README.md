@@ -1,11 +1,37 @@
-# UMD2MKV
-Convert a PSP UMD movie iso file to a MKV file (video,audio,subs)  
+# UMD2MKV (WIP)
+## Convert a PSP UMD movie iso file to a MKV file (video,audio,subs)  
 <img src="screenshot.jpg" alt="App Screenshot" width="400"/>  
 
+## Rationale:
 
+Julian, a friend of mine makes comparison videos on youtube exploring the picture quality differences between different home video releases.
+You can find his work on : https://www.youtube.com/@JulianDeBacker  
+Besides dvd's, (4K) bluray's, laserdiscs, vhs tapes, ... he also asseses the quality of UMD video releases.
+Where possible he tries to use the cleanest copy for this "fair use" purpose so direct digital copies are preferred.
+His focus is not on technical processes so this is where UMD2MKV comes into play.
+Without the need to know about several tools and technical jargon he can now easily extract scenes from UMD movies.
 
+## Usage:
 
-Idea/general steps needed coming from:  
+1. Select an ISO file of the UMD movie you want to convert.
+   (You will need access to a PSP with a custom firmware, place your favourite movie in the UMD drive, press the option button and set USB to UMD, connect your psp via USB to your PC and a new drive should pop up containing the ISO)
+2. Select an output/working directory. This needs to be an empty folder!
+3. If you only want to export a scene or segment of the movie check the "select" segment checkbox and fill in the start and end time. (following the format of hours:minutes:seconds)
+4. Choose how you want the audio to be transcoded. ACC for lossy compression, FLAC for lossles.
+5. Push the "Convert ISO to MKV button" and wait a few minutes. (on my macbook air m3 it takes approximately 3 minutes for a typical movie)
+
+## Known issues:
+
+Exporting subtitles is a work in progess.
+I am able to export all of the PNG's in the subtitle stream but I'm having issues with finding timing information.
+Once this has been tackled the goal is to use OCR on the PNG's and to add standard .srt files in the MKV.
+If you currently check the "Handle" subtitles checkbox it will dump the PNG's for each language and attempt to create the timings file.
+
+## Releases:
+No binaries yet ... coming soon for windows X64 , windows ARM64, MAC X64, MAC ARM
+
+## References:
+Idea/general process needed to do the conversion coming from:  
 https://www.journaldulapin.com/2015/02/12/comment-ripper-un-umd-video/  
 https://www.reddit.com/r/PSP/comments/n7t7co/my_quest_to_rip_a_psp_umd_movie/  
 
@@ -18,7 +44,7 @@ https://github.com/Manicsteiner/VGMToolbox
 Extracting PNG files from subtitle files based on:  
 https://gist.github.com/rlaphoenix/c2547539f6b35aa7dd33714c43813150  
 
-Encoding audio and Muxing by using FFmpeg (through Xabe.Ffmpeg):  
+Encoding audio and muxing by using FFmpeg (through Xabe.Ffmpeg):  
 https://github.com/FFmpeg/FFmpeg. 
 https://github.com/tomaszzmuda/Xabe.FFmpeg  
 
