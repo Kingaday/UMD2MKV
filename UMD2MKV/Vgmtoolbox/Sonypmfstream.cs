@@ -6,13 +6,8 @@ namespace UMD2MKV.VGMToolbox
         private const string atrac3AudioExtension = ".at3";
         private const string lpcmAudioExtension = ".lpcm";
         private const string subTitleExtension = ".subs";
-
-        public const byte LpcmStreamId = 0x40;
-
-        public static readonly byte[] Atrac3Bytes = [0x1E, 0x60, 0x04];
-        public static readonly byte[] LpcmBytes = [0x1E, 0x61, 0x80, 0x40];
-
         private const string avcVideoExtension = ".264";
+        
         private static readonly byte[] AvcBytes = [0x00, 0x00, 0x00, 0x01];
 
         protected Sonypmfstream(string path) : base(path)

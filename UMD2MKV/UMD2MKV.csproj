@@ -35,6 +35,7 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+        
     </PropertyGroup>
 
     <ItemGroup>
@@ -68,6 +69,7 @@
       <Folder Include="FFmpeg\macos-arm64\" />
       <Folder Include="FFmpeg\macos-x64\" />
       <Folder Include="FFmpeg\win-x64\" />
+      <Folder Include="Resources\Images\" />
     </ItemGroup>
 
     <Target Name="_CopyFilesToBundle" AfterTargets="Build" Condition="$(TargetFramework.Contains('maccatalyst'))">
@@ -92,5 +94,6 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
+    
 
 </Project>

@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:umd2Mkv="clr-namespace:UMD2MKV"
+             x:DataType="{x:Type umd2Mkv:MainPage}"
              x:Class="UMD2MKV.MainPage">
     <ScrollView>
         <VerticalStackLayout
@@ -29,14 +31,14 @@
                  <Label Text="Select segment?" VerticalOptions="Center"/>
                  <CheckBox x:Name="SegmentChk" IsChecked="false" VerticalOptions="Center" IsEnabled="{Binding UiEnabled}"/>
             </HorizontalStackLayout>
-            <Label Text="Start time of the segment (hours:minutes:seconds  example 00:02:00):" IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}"/>
+            <Label Text="Start time of the segment (hours:minutes:seconds  example 00:02:00):" IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" IsEnabled="{Binding UiEnabled}"/>
             <Entry x:Name="StartTime" Placeholder="hh:mm:ss" Keyboard="Numeric"  IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" HorizontalOptions="Fill" IsEnabled="{Binding UiEnabled}">
                  <Entry.Behaviors>
                      <toolkit:MaskedBehavior Mask="XX:XX:XX" />
                 </Entry.Behaviors>
             </Entry>
             <Label Text="End time of the segment (hours:minutes:seconds  example 00:06:00):" IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" IsEnabled="{Binding UiEnabled}"/>
-            <Entry x:Name="EndTime" Placeholder="hh:mm:ss" Keyboard="Numeric"  IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" HorizontalOptions="Fill">
+            <Entry x:Name="EndTime" Placeholder="hh:mm:ss" Keyboard="Numeric"  IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" HorizontalOptions="Fill" IsEnabled="{Binding UiEnabled}">
                 <Entry.Behaviors>
                     <toolkit:MaskedBehavior Mask="XX:XX:XX" />
                 </Entry.Behaviors>

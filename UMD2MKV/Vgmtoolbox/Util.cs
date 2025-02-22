@@ -39,9 +39,9 @@ namespace UMD2MKV.VGMToolbox
         {
             var currentStreamPosition = stream.Position;
 
-            stream.Seek((long)startingOffset, SeekOrigin.Begin);
+            stream.Seek(startingOffset, SeekOrigin.Begin);
             var br = new BinaryReader(stream);
-            var ret = br.ReadBytes((int)lengthToCut);
+            var ret = br.ReadBytes(lengthToCut);
 
             stream.Position = currentStreamPosition;
 

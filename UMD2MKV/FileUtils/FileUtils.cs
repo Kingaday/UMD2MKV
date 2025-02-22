@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DiscUtils.Iso9660;
 
 namespace UMD2MKV.FileUtils;
@@ -51,23 +50,6 @@ public static class FileUtils
 
     }
     public static bool DirectoryHasFiles(string directoryPath)=> Directory.Exists(directoryPath) && Directory.EnumerateFiles(directoryPath).Any();
-    
-    public static async Task<bool> IsoIsUmdMovie(string isoPath)
-    {
-        try
-        {
-            const string targetFolder = @"\UMD_VIDEO\STREAM";
-            await using var isoStream = new FileStream(isoPath, FileMode.Open, FileAccess.Read);
-            if (!CDReader.Detect(isoStream)) return false;
-            var cdReader = new CDReader(isoStream, true);
-            return cdReader.DirectoryExists(targetFolder);
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-    }
-
     public static void DeleteFilesWithExtension(string directoryPath, string extension)
     {
         var files = GetFilesWithExtension(directoryPath, extension);

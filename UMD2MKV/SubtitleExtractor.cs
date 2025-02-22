@@ -83,11 +83,11 @@ public static class Subtitles
     
     public static async Task<bool> ConvertAndMuxSubtitles(string outputPath)
     {
-            await ExtractPngFromSubtitles(outputPath);
+            var success = await ExtractPngFromSubtitles(outputPath);
             await ExtractTimeStampsFromSubtitles(outputPath);
             // OCR png files and replace image to text in srt files
             // mux srt files into mkv movie
-        return true;
+        return success;
     }
     
     
@@ -103,7 +103,7 @@ public static class Subtitles
 
 
             // adjusted vgmtoolbox code for extracting timestamps .... not working 
-            // disabled png writing as this is done elsewere more succesfully already
+            // disabled png writing as this is done elsewhere more successfully already
             var subsLength = subtitleStream.Length;
             long currentOffset = 0;
 

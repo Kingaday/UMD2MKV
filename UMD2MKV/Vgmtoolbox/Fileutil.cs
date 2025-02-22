@@ -53,10 +53,10 @@ namespace UMD2MKV.VGMToolbox
             // get length of current size to write
             currentChunkSize = fs.Length - currentReadOffset;
 
-            // calculcate max cut size
-            maxReadSize = (currentChunkSize - totalBytesRead) > (long)bytes.Length
+            // calculate max cut size
+            maxReadSize = (currentChunkSize) > bytes.Length
                 ? bytes.Length
-                : (int)(currentChunkSize - totalBytesRead);
+                : (int)(currentChunkSize);
 
             while ((bytesRead = fs.Read(bytes, 0, maxReadSize)) > 0)
             {

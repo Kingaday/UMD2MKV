@@ -9,9 +9,7 @@ namespace UMD2MKV.VGMToolbox
         {
             FilePath = path;            
             UsesSameIdForMultipleAudioTracks = false;
-            SubTitleExtractionSupported = false;
             BlockSizeIsLittleEndian = false;
-
             //********************
             // Add Slice Packets 
             //********************
@@ -117,13 +115,12 @@ namespace UMD2MKV.VGMToolbox
             };
         #endregion
 
-        private string FilePath { get; set; }
+        private string FilePath { get; }
         protected string FileExtensionAudio { get; init; }
         protected string FileExtensionVideo { get; set; }
         protected readonly Dictionary<byte, string> StreamIdFileType = new();
         protected bool UsesSameIdForMultipleAudioTracks { init; get; } // for PMF/PAM/DVD, who use 000001BD for all audio tracks
-        public bool SubTitleExtractionSupported { set; get; } // assume not supported.
-        private bool BlockSizeIsLittleEndian { set; get; }
+        private bool BlockSizeIsLittleEndian { get; }
         private static byte[] GetPacketStartBytes() { return PacketStartBytes; }
         protected abstract int GetAudioPacketHeaderSize(Stream readStream, long currentOffset);
         protected virtual int GetAudioPacketSubHeaderSize(Stream readStream, long currentOffset, byte streamId) { return 0; }
@@ -136,7 +133,6 @@ namespace UMD2MKV.VGMToolbox
                     (blockToCheck[3] <= 0xDF));
         }
         protected virtual bool IsThisAVideoBlock(byte[] blockToCheck) => ((blockToCheck[3] >= 0xE0) && (blockToCheck[3] <= 0xEF));
-        protected virtual bool IsThisASubPictureBlock(byte[] blockToCheck) => ((blockToCheck[3] >= 0xE0) && (blockToCheck[3] <= 0xEF));
         protected virtual string GetAudioFileExtension(Stream readStream, long currentOffset)=>FileExtensionAudio;
         protected virtual string GetVideoFileExtension(Stream readStream, long currentOffset)=>FileExtensionVideo;
         protected virtual byte GetStreamId(Stream readStream, long currentOffset) => 0;
