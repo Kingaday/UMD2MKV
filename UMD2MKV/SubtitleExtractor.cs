@@ -78,30 +78,21 @@ public static class Subtitles
         }
         return -1;
     }
-    
-
-    
     public static async Task<bool> ConvertAndMuxSubtitles(string outputPath)
     {
             var success = await ExtractPngFromSubtitles(outputPath);
             await ExtractTimeStampsFromSubtitles(outputPath);
-            // OCR png files and replace image to text in srt files
-            // mux srt files into mkv movie
+            // OCR png files and replace path to image to text in srt files ... tessarect/LLM/...
+            await FFmpeg.Ffmpeg.MuxSubtitlesAsync(Path.Combine(outputPath, "movie.mkv"),FileUtils.FileUtils.GetFilesWithExtension(outputPath,"*.srt",SearchOption.AllDirectories),outputPath);
         return success;
     }
-    
-    
-    
-    
-    
     private static async Task ExtractTimeStampsFromSubtitles(string outputPath)
     {
         var subtitleFiles = FileUtils.FileUtils.GetFilesWithExtension(outputPath, "*.subs");
         foreach (var sub in subtitleFiles)
         {
             await using var subtitleStream = new FileStream(sub!, FileMode.Open, FileAccess.Read);
-
-
+            
             // adjusted vgmtoolbox code for extracting timestamps .... not working 
             // disabled png writing as this is done elsewhere more successfully already
             var subsLength = subtitleStream.Length;
@@ -130,11 +121,13 @@ public static class Subtitles
                 var pngSize = pngEndOffset - pngStartOffset;
                 if (pngSize > (subtitlePacketSize - 0x14))
                 {
+                    Console.WriteLine($"Warning: PNG size ({pngSize}) exceeds packet size ({subtitlePacketSize - 0x14}). Skipping...");
+                    //currentOffset += 0xE + subtitlePacketSize;
+                    break;
                     // something going wrong ... need more debug time or someone smarter than me :) 
                     // for now only timings until sub extraction goes wrong...
                     // issue 1 => pngsize is at certain moment to large skewing further read out of file, if we ignore the png's seem to still be picked up correctly but the timestamp readouts go wrong
                     // issue 2 => we can extract the timestamp of the start to show but how long to show??? is this info also present in the binary file?
-                    break;
                 }
 
                 var destinationFile = Path.Combine(baseDirectory, $"{pngCount:D8}.png");
@@ -195,4 +188,5 @@ public static class Subtitles
 
             return decodedTimeStamp;
         }
+    
 }

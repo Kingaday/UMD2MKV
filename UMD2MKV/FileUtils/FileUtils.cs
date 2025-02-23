@@ -42,10 +42,10 @@ public static class FileUtils
         }
         return true;
     }
-    public static List<string?> GetFilesWithExtension(string directoryPath, string extension)
+    public static List<string?> GetFilesWithExtension(string directoryPath, string extension, SearchOption searchOption = SearchOption.TopDirectoryOnly)
     {
         if (Directory.Exists(directoryPath))
-            return [..Directory.GetFiles(directoryPath, extension, SearchOption.TopDirectoryOnly)];
+            return [..Directory.GetFiles(directoryPath, extension, searchOption)];
         return [];
 
     }

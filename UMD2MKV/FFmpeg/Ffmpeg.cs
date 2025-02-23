@@ -99,6 +99,46 @@ public static class Ffmpeg
         }
         return true;
     }
+    public static async Task<bool> MuxSubtitlesAsync(string inputMkv, List<string?>? subtitleFiles, string outputPath)
+    {
+        if (string.IsNullOrWhiteSpace(inputMkv) || subtitleFiles == null || subtitleFiles.Count == 0)
+            throw new ArgumentException("Invalid input file or subtitle list.");
+
+        var conversion = Xabe.FFmpeg.FFmpeg.Conversions.New()
+            .AddParameter($"-i \"{inputMkv}\"");
+        foreach (var srt in subtitleFiles)
+            conversion.AddParameter($"-i \"{srt}\"");
+        conversion.AddParameter("-map 0");  
+        for (var i = 0; i < subtitleFiles.Count; i++)
+            conversion.AddParameter($"-map {i + 1} -c:s:{i} srt");
+        conversion.AddParameter("-c:v copy -c:a copy");
+        conversion.SetOutput(Path.Combine(outputPath,"subbed_movie.mkv"));
+            
+        try
+        {
+            await conversion.Start();
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        //cleanup original mkv and srt files
+        File.Delete(inputMkv);
+        //leave srt files for now until timing extraction is resolved
+        /*foreach (var file in subtitleFiles)
+        {
+            try
+            {
+                if (file != null) File.Delete(file);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }*/
+        return true;
+    }
     private static string GetFfmpegPath()
     {
         var baseDir = Directory.GetCurrentDirectory();

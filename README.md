@@ -6,7 +6,7 @@
 
 Julian, a friend of mine produces comparison videos on youtube exploring the picture quality differences between different home video releases.
 You can find his work on : https://www.youtube.com/@JulianDeBacker  
-Besides dvd's, (4K) bluray's, laserdiscs, vhs tapes, ... he also assesses the quality of UMD video releases.
+Besides dvds, (4K) blurays, laserdiscs, vhs tapes, ... he also assesses the quality of UMD video releases.
 Where possible he tries to use the cleanest copy for this "fair use" purpose so direct digital copies are preferred.
 His focus is not on technical processes so this is where UMD2MKV comes into play.
 Without the need to know about several tools and technical jargon he can now easily extract scenes from UMD movies.
@@ -27,6 +27,8 @@ Without the need to know about several tools and technical jargon he can now eas
 I am able to export all of the PNG's in the subtitle stream but I'm having issues with finding timing information.
 Once this has been tackled the goal is to use OCR on the PNG's and to add standard .srt files in the MKV.
 If you currently check the "Handle" subtitles checkbox it will dump the PNG's for each language and attempt to create the timings file.
+It will not do any OCR yet but just mux the subtitle files with the paths to the png's in it in stead of the actual text.
+All files related to subtitle handling are NOT deleted from the output directory for debugging purposes.
 If you can help in making sense of the binary structure of the psp subs files please contact me :) 
 
 ## Releases:
