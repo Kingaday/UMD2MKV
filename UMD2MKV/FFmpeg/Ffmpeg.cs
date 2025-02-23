@@ -7,42 +7,29 @@ public static class Ffmpeg
 {
     public static async Task<bool> ConvertOma(List<string?>? inputFiles, string outputDirectory,bool lossy, CancellationToken cancellationToken,IProgress<int>? progress = null)
     {
-#if WINDOWS
+#if WINDOWS //having issues on macOS to get Xabe to find the ffmpegpath ... for now just copying during build to the MonoBundle folder in the app package
            Xabe.FFmpeg.FFmpeg.SetExecutablesPath(GetFfmpegPath());
 #endif
         if (inputFiles == null || inputFiles.Count == 0) return false;
         foreach (var inputFile in inputFiles)
         {
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(inputFile);
-            if (lossy)
+            var codec = lossy ? "aac" : "flac";
+            var outputFile = Path.Combine(outputDirectory, $"{fileNameWithoutExtension}.{codec}");
+    
+            var conversion = Xabe.FFmpeg.FFmpeg.Conversions.New()
+                .AddParameter($"-i \"{inputFile}\" -c:a {codec} \"{outputFile}\"");
+
+            conversion.OnProgress += (_, args) => progress?.Report(args.Percent);
+    
+            try
             {
-                var outputFile = Path.Combine(outputDirectory, $"{fileNameWithoutExtension}.aac");
-                var conversion = Xabe.FFmpeg.FFmpeg.Conversions.New().AddParameter($"-i \"{inputFile}\" -c:a aac \"{outputFile}\"");
-                conversion.OnProgress += (_, args) => { progress?.Report(args.Percent); };
-                try
-                {
-                    await conversion.Start(cancellationToken);
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                await conversion.Start(cancellationToken);
             }
-            else
+            catch (Exception)
             {
-                var outputFile = Path.Combine(outputDirectory, $"{fileNameWithoutExtension}.flac");
-                var conversion = Xabe.FFmpeg.FFmpeg.Conversions.New().AddParameter($"-i \"{inputFile}\" -c:a flac \"{outputFile}\"");
-                conversion.OnProgress += (_, args) => { progress?.Report(args.Percent); };
-                try
-                {
-                    await conversion.Start(cancellationToken);
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                return false;
             }
-            
         }
         //cleanup oma files 
         foreach (var file in inputFiles)
@@ -58,7 +45,7 @@ public static class Ffmpeg
         }
         return true;
     }
-    public static async Task<bool> MergeMpsWithFlacAsync(string? videoPath, List<string?>? audioPaths, string outputPath, bool segment, TimeSpan startTime, TimeSpan endTime,IProgress<int>? progress = null )
+    public static async Task<bool> MergeMpsWithEncodedAudioAsync(string? videoPath, List<string?>? audioPaths, string outputPath, bool segment, TimeSpan startTime, TimeSpan endTime,IProgress<int>? progress = null )
     {
 #if WINDOWS
            Xabe.FFmpeg.FFmpeg.SetExecutablesPath(GetFfmpegPath());
@@ -98,7 +85,6 @@ public static class Ffmpeg
         }
         //cleanup files 
         audioPaths.Add(videoPath);
-        //audioPaths.AddRange(FileUtils.FileUtils.GetFilesWithExtension(outputPath, "*.subs")!);
         foreach (var file in audioPaths)
         {
             try
@@ -113,8 +99,6 @@ public static class Ffmpeg
         }
         return true;
     }
-    
-    
     private static string GetFfmpegPath()
     {
         var baseDir = Directory.GetCurrentDirectory();

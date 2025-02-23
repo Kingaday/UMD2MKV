@@ -44,9 +44,7 @@
                 </Entry.Behaviors>
             </Entry>
             <VerticalStackLayout>
-
                 <Label Text="Choose an Audio Codec:"/>
-
                 <RadioButton x:Name="AacRadioButton"
                              Content="AAC (Lossy - Smaller Files - Best Compatibility)"
                              GroupName="CodecGroup"

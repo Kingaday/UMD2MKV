@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    
     <!-- UMD Text (shifted up to center vertically) -->
     <text x="50%" y="40%" font-family="Arial" font-size="155" fill="white" text-anchor="middle">UMD</text>
-
     <!-- Centered 2 touching UMD and MVK -->
     <text x="50%" y="53%" font-family="Arial" font-size="155" fill="Red" text-anchor="middle">2</text>
-
     <!-- MVK Text -->
     <text x="50%" y="66%" font-family="Arial" font-size="155" fill="white" text-anchor="middle">MKV</text>
-
 </svg>

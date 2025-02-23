@@ -109,7 +109,6 @@ public partial class MainPage
     {
         try
         {
-            //await Subtitles.ExtractPngFromSubtitles(OutputPath.Text);
             UiEnabled = false;
             var start = TimeSpan.Zero;
             var end = TimeSpan.Zero;
@@ -155,7 +154,7 @@ public partial class MainPage
                             //4 mux video and encoded audio files into new mkv using ffmpeg (xabe.ffmpeg)
                             //4 if split is selected cut part of video using ffmpeg (xabe.ffmpeg)
                             ProgressTxt.Text = "Muxing video (mps) and audio (aac/flc) in mkv...";
-                            var successMux = await Ffmpeg.MergeMpsWithFlacAsync(
+                            var successMux = await Ffmpeg.MergeMpsWithEncodedAudioAsync(
                                 FileUtils.FileUtils.GetFilesWithExtension(OutputPath.Text, "*.mps").FirstOrDefault(),
                                 FileUtils.FileUtils.GetFilesWithExtension(OutputPath.Text, _lossy?"*.aac":"*.flac"), OutputPath.Text,
                                 SegmentChk.IsChecked, start, end, progress);
@@ -199,14 +198,13 @@ public partial class MainPage
             ProgressTxt.Text = ex.Message;
         }
     }
-
-    private void Done()
+    private void OnCodecChanged(object? sender, CheckedChangedEventArgs e)
     {
-        ProgressTxt.Text = "Done!";
-        ProgressBar.Progress = 1;
-        UiEnabled = true;
+        if (AacRadioButton.IsChecked)
+            _lossy = true;
+        else if (FlacRadioButton.IsChecked)
+            _lossy = false;
     }
-
     private async Task<FileResult?> PickFileAsync(PickOptions options)
     {
         if (options == null)
@@ -243,11 +241,10 @@ public partial class MainPage
         }
         return null;
     }
-    private void OnCodecChanged(object? sender, CheckedChangedEventArgs e)
+    private void Done()
     {
-        if (AacRadioButton.IsChecked)
-            _lossy = true;
-        else if (FlacRadioButton.IsChecked)
-            _lossy = false;
+        ProgressTxt.Text = "Done!";
+        ProgressBar.Progress = 1;
+        UiEnabled = true;
     }
 }
