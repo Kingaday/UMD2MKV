@@ -1,7 +1,5 @@
-namespace UMD2MKV.VGMToolbox
+namespace UMD2MKV.VGMToolbox;
+public sealed class SonyPspMpsStream(string path) : Sonypmfstream(path)
 {
-    public sealed class SonyPspMpsStream(string path) : Sonypmfstream(path)
-    {
-        protected override long GetStartOffset(Stream readStream, long currentOffset) => 0;
-    }
+    protected override long GetStartOffset(Stream readStream, long currentOffset) => 0;
 }

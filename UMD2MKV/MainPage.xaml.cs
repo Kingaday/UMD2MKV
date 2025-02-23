@@ -17,7 +17,17 @@ public partial class MainPage
     private bool _uiEnabled = true;
     private bool _isoSelected;
     private bool _outputSelected;
+    private bool _segmentSelected;
 
+    public bool SegmentSelected
+    {
+        get => _segmentSelected;
+        set
+        {
+            _segmentSelected = value;
+            OnPropertyChanged();
+        }
+    }
     public bool UiEnabled
     {
         get => _uiEnabled;

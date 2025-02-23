@@ -5,8 +5,7 @@ namespace UMD2MKV.VGMToolbox
         private const string defaultAudioExtension = ".m2a";
         private const string defaultVideoExtension = ".m2v";
 
-        protected Mpeg2Stream(string path) :
-            base(path)
+        protected Mpeg2Stream(string path) : base(path)
         {
             FileExtensionAudio = defaultAudioExtension;
             FileExtensionVideo = defaultVideoExtension;

@@ -29,16 +29,16 @@
                  <Label Text="Handle subtitles? (experimental)" VerticalOptions="Center"/>
                 <CheckBox x:Name="SubtitletChk" IsChecked="false" VerticalOptions="Center" IsEnabled="{Binding UiEnabled}"/>
                  <Label Text="Select segment?" VerticalOptions="Center"/>
-                 <CheckBox x:Name="SegmentChk" IsChecked="false" VerticalOptions="Center" IsEnabled="{Binding UiEnabled}"/>
+                 <CheckBox x:Name="SegmentChk" IsChecked="{Binding SegmentSelected}" VerticalOptions="Center" IsEnabled="{Binding UiEnabled}"/>
             </HorizontalStackLayout>
-            <Label Text="Start time of the segment (hours:minutes:seconds  example 00:02:00):" IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" IsEnabled="{Binding UiEnabled}"/>
-            <Entry x:Name="StartTime" Placeholder="hh:mm:ss" Keyboard="Numeric"  IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" HorizontalOptions="Fill" IsEnabled="{Binding UiEnabled}">
+            <Label Text="Start time of the segment (hours:minutes:seconds  example 00:02:00):" IsVisible="{Binding SegmentSelected}" IsEnabled="{Binding UiEnabled}"/>
+            <Entry x:Name="StartTime" Placeholder="hh:mm:ss" Keyboard="Numeric"  IsVisible="{Binding SegmentSelected}" HorizontalOptions="Fill" IsEnabled="{Binding UiEnabled}">
                  <Entry.Behaviors>
                      <toolkit:MaskedBehavior Mask="XX:XX:XX" />
                 </Entry.Behaviors>
             </Entry>
-            <Label Text="End time of the segment (hours:minutes:seconds  example 00:06:00):" IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" IsEnabled="{Binding UiEnabled}"/>
-            <Entry x:Name="EndTime" Placeholder="hh:mm:ss" Keyboard="Numeric"  IsVisible="{Binding Source={x:Reference SegmentChk}, Path=IsChecked}" HorizontalOptions="Fill" IsEnabled="{Binding UiEnabled}">
+            <Label Text="End time of the segment (hours:minutes:seconds  example 00:06:00):" IsVisible="{Binding SegmentSelected}" IsEnabled="{Binding UiEnabled}"/>
+            <Entry x:Name="EndTime" Placeholder="hh:mm:ss" Keyboard="Numeric"  IsVisible="{Binding SegmentSelected}" HorizontalOptions="Fill" IsEnabled="{Binding UiEnabled}">
                 <Entry.Behaviors>
                     <toolkit:MaskedBehavior Mask="XX:XX:XX" />
                 </Entry.Behaviors>
