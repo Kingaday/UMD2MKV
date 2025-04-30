@@ -26,11 +26,9 @@ Without the need to know about several tools and technical jargon he can now eas
 2. Exporting subtitles is a work in progess.
 I am able to export all of the PNG's in the subtitle stream but I'm having issues with finding timing information.
 Once this has been tackled the goal is to use OCR on the PNG's and to add standard .srt files in the MKV.
-If you currently check the "Handle" subtitles checkbox it will dump the PNG's for each language and attempt to create the timings file.
-It will not do any OCR yet but just mux the subtitle files with the paths to the png's in it in stead of the actual text.
-All files related to subtitle handling are NOT deleted from the output directory for debugging purposes.
 If you can help in making sense of the binary structure of the psp subs files please contact me :)
--->UPDATE : it seems the format IS vobsub ... trying out some code based on subtitleedit (https://github.com/SubtitleEdit/subtitleedit) to deal with the timestamps
+-->UPDATE : it seems the format is partially supported by subtitle edit... but the timing is still off trying out some code based on subtitleedit code (https://github.com/SubtitleEdit/subtitleedit) to deal with the timestamps.
+I am trying to support exporting vobsub (with the png's) and srt (with ocr) style subtitles.
 
 ## Releases:
 Only win X64 release for now. Mac releases will come soon.
@@ -52,5 +50,8 @@ https://gist.github.com/rlaphoenix/c2547539f6b35aa7dd33714c43813150
 Encoding audio and muxing by using FFmpeg (through Xabe.Ffmpeg):  
 https://github.com/FFmpeg/FFmpeg. 
 https://github.com/tomaszzmuda/Xabe.FFmpeg  
+
+Subtitle timing extracting based on :
+https://github.com/SubtitleEdit/subtitleedit
 
 
