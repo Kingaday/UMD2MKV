@@ -29,7 +29,8 @@ Once this has been tackled the goal is to use OCR on the PNG's and to add standa
 If you currently check the "Handle" subtitles checkbox it will dump the PNG's for each language and attempt to create the timings file.
 It will not do any OCR yet but just mux the subtitle files with the paths to the png's in it in stead of the actual text.
 All files related to subtitle handling are NOT deleted from the output directory for debugging purposes.
-If you can help in making sense of the binary structure of the psp subs files please contact me :) 
+If you can help in making sense of the binary structure of the psp subs files please contact me :)
+-->UPDATE : it seems the format IS vobsub ... trying out some code based on subtitleedit (https://github.com/SubtitleEdit/subtitleedit) to deal with the timestamps
 
 ## Releases:
 Only win X64 release for now. Mac releases will come soon.
