@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Storage;
 using UMD2MKV.FFmpeg;
+using UMD2MKV.SubtitleEdit;
 using UMD2MKV.VGMToolbox;
 
 namespace UMD2MKV;
@@ -14,10 +15,12 @@ public partial class MainPage
     }
 
     private bool _lossy = true;
+    private OutputSubtitleType _subtype = OutputSubtitleType.VobSub;
     private bool _uiEnabled = true;
     private bool _isoSelected;
     private bool _outputSelected;
     private bool _segmentSelected;
+    private bool _subSelected;
 
     public bool SegmentSelected
     {
@@ -25,6 +28,15 @@ public partial class MainPage
         set
         {
             _segmentSelected = value;
+            OnPropertyChanged();
+        }
+    }
+    public bool SubSelected
+    {
+        get => _subSelected;
+        set
+        {
+            _subSelected = value;
             OnPropertyChanged();
         }
     }
@@ -109,6 +121,7 @@ public partial class MainPage
     {
         try
         {
+            //var successSubtitle1 = await Subtitles.ConvertAndMuxSubtitles(OutputPath.Text, _subtype);
             UiEnabled = false;
             var start = TimeSpan.Zero;
             var end = TimeSpan.Zero;
@@ -160,10 +173,11 @@ public partial class MainPage
                                 SegmentChk.IsChecked, start, end, progress);
                             if (successMux)
                             {
-                                // Demux subtitles, convert to vobsub, mux into mkv using vgmtoolbox incomplete code + xabe.ffmpeg
+                                // Demux subtitles, convert to srt/vobsub, mux into mkv using subtitleedit based code + xabe.ffmpeg (when working move before muxing and do muxing in one step)
                                 if (SubtitletChk.IsChecked)
                                 {
-                                    var successSubtitle = await Subtitles.ConvertAndMuxSubtitles(OutputPath.Text);
+                                    ProgressTxt.Text = "Converting and muxing subtitles...";
+                                    var successSubtitle = await Subtitles.ConvertAndMuxSubtitles(OutputPath.Text, _subtype, progress);
                                     if (successSubtitle)
                                         Done();
                                     else
@@ -204,6 +218,13 @@ public partial class MainPage
             _lossy = true;
         else if (FlacRadioButton.IsChecked)
             _lossy = false;
+    }
+    private void OnSubTypeChanged(object? sender, CheckedChangedEventArgs e)
+    {
+        if (VobSubRadioButton.IsChecked)
+            _subtype = OutputSubtitleType.VobSub;
+        else if (SrtRadioButton.IsChecked)
+            _subtype = OutputSubtitleType.Srt;
     }
     private async Task<FileResult?> PickFileAsync(PickOptions options)
     {

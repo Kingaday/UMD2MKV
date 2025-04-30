@@ -25,10 +25,20 @@
                 Clicked="OnOutputSelectClicked"
                 HorizontalOptions="Fill"
                 IsEnabled="{Binding UiEnabled}"/>
+            <VerticalStackLayout>
+                <Label Text="Choose an Audio Codec:"/>
+                <RadioButton x:Name="AacRadioButton"
+                             Content="AAC (Lossy - Smaller Files - Best Compatibility)"
+                             GroupName="CodecGroup"
+                             IsChecked="True"
+                             CheckedChanged="OnCodecChanged" IsEnabled="{Binding UiEnabled}" />
+                <RadioButton x:Name="FlacRadioButton"
+                             Content="FLAC (Lossless - Larger Files - Best Quality)"
+                             GroupName="CodecGroup"
+                             CheckedChanged="OnCodecChanged" IsEnabled="{Binding UiEnabled}" />
+            </VerticalStackLayout>
             <HorizontalStackLayout Padding="0,0" Spacing="5">
-                 <Label Text="Handle subtitles? (experimental)" VerticalOptions="Center"/>
-                <CheckBox x:Name="SubtitletChk" IsChecked="false" VerticalOptions="Center" IsEnabled="{Binding UiEnabled}"/>
-                 <Label Text="Select segment?" VerticalOptions="Center"/>
+                  <Label Text="Convert segment?" VerticalOptions="Center"/>
                  <CheckBox x:Name="SegmentChk" IsChecked="{Binding SegmentSelected}" VerticalOptions="Center" IsEnabled="{Binding UiEnabled}"/>
             </HorizontalStackLayout>
             <Label Text="Start time of the segment (hours:minutes:seconds  example 00:02:00):" IsVisible="{Binding SegmentSelected}" IsEnabled="{Binding UiEnabled}"/>
@@ -43,17 +53,21 @@
                     <toolkit:MaskedBehavior Mask="XX:XX:XX" />
                 </Entry.Behaviors>
             </Entry>
-            <VerticalStackLayout>
-                <Label Text="Choose an Audio Codec:"/>
-                <RadioButton x:Name="AacRadioButton"
-                             Content="AAC (Lossy - Smaller Files - Best Compatibility)"
-                             GroupName="CodecGroup"
+            <HorizontalStackLayout Padding="0,0" Spacing="5">
+                <Label Text="Handle subtitles? (Work in progress)" VerticalOptions="Center"/>
+                <CheckBox x:Name="SubtitletChk" IsChecked="{Binding SubSelected}" VerticalOptions="Center" IsEnabled="{Binding UiEnabled}"/>
+            </HorizontalStackLayout>
+            <VerticalStackLayout IsVisible="{Binding SubSelected}">
+                <Label Text="Choose a subtitle format:"/>
+                <RadioButton x:Name="VobSubRadioButton"
+                             Content="Vobsub (Image based - accurate copy - less flexible)"
+                             GroupName="SubtitleGroup"
                              IsChecked="True"
-                             CheckedChanged="OnCodecChanged" IsEnabled="{Binding UiEnabled}" />
-                <RadioButton x:Name="FlacRadioButton"
-                             Content="FLAC (Lossless - Larger Files - Best Quality)"
-                             GroupName="CodecGroup"
-                             CheckedChanged="OnCodecChanged" IsEnabled="{Binding UiEnabled}" />
+                             CheckedChanged="OnSubTypeChanged" IsEnabled="{Binding UiEnabled}" />
+                <RadioButton x:Name="SrtRadioButton"
+                             Content="Srt (Text based - possible loss of accuracy - flexible)"
+                             GroupName="SubtitleGroup"
+                             CheckedChanged="OnSubTypeChanged" IsEnabled="{Binding UiEnabled}" />
             </VerticalStackLayout>
             <Button
                 x:Name="ConvertBtn"

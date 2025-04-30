@@ -65,4 +65,17 @@ public static class FileUtils
             }
         }
     }
+    public static void DeleteDirectoryWithContent(string directoryPath)
+    {
+        
+            try
+            {
+                if (Directory.Exists(directoryPath)) Directory.Delete(directoryPath, true);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        
+    }
 }

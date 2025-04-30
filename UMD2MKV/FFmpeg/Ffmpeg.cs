@@ -99,6 +99,7 @@ public static class Ffmpeg
         }
         return true;
     }
+    
     public static async Task<bool> MuxSubtitlesAsync(string inputMkv, List<string?>? subtitleFiles, string outputPath)
     {
         if (string.IsNullOrWhiteSpace(inputMkv) || subtitleFiles == null || subtitleFiles.Count == 0)
@@ -106,14 +107,25 @@ public static class Ffmpeg
 
         var conversion = Xabe.FFmpeg.FFmpeg.Conversions.New()
             .AddParameter($"-i \"{inputMkv}\"");
-        foreach (var srt in subtitleFiles)
-            conversion.AddParameter($"-i \"{srt}\"");
-        conversion.AddParameter("-map 0");  
+
+        foreach (var subtitle in subtitleFiles)
+            conversion.AddParameter($"-i \"{subtitle}\"");
+
+        conversion.AddParameter("-map 0"); // Map video and audio streams
+
         for (var i = 0; i < subtitleFiles.Count; i++)
-            conversion.AddParameter($"-map {i + 1} -c:s:{i} srt");
+        {
+            var subtitle = subtitleFiles[i];
+            if (subtitle == null) continue;
+            var extension = Path.GetExtension(subtitle).ToLowerInvariant();
+            var codec = extension == ".srt" ? "srt" : "copy"; // Use copy for VobSub (.idx/.sub) and srt for text subtitles
+            conversion.AddParameter($"-map {i + 1} -c:s:{i} {codec}");
+        }
+
         conversion.AddParameter("-c:v copy -c:a copy");
-        conversion.SetOutput(Path.Combine(outputPath,"subbed_movie.mkv"));
-            
+        var outputFile = Path.Combine(outputPath, "subbed_movie.mkv");
+        conversion.SetOutput(outputFile);
+
         try
         {
             await conversion.Start();
@@ -123,20 +135,8 @@ public static class Ffmpeg
             return false;
         }
 
-        //cleanup original mkv and srt files
+        if (!File.Exists(outputFile)) return false;
         File.Delete(inputMkv);
-        //leave srt files for now until timing extraction is resolved
-        /*foreach (var file in subtitleFiles)
-        {
-            try
-            {
-                if (file != null) File.Delete(file);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }*/
         return true;
     }
     private static string GetFfmpegPath()
