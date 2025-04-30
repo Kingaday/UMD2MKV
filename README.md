@@ -51,7 +51,7 @@ Encoding audio and muxing by using FFmpeg (through Xabe.Ffmpeg):
 https://github.com/FFmpeg/FFmpeg. 
 https://github.com/tomaszzmuda/Xabe.FFmpeg  
 
-Subtitle timing extracting based on :
+Extracting subtitle timing extracting + writing as vobsub based on subtitle edit (added platform independent implementation of bitmap handling using skiasharp) :
 https://github.com/SubtitleEdit/subtitleedit
 
 
