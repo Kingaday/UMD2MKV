@@ -23,11 +23,22 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build MAUI Windows App
-        run: dotnet build -c Release -f net9.0-windows10.0.19041.0
-        
-      - name: Upload Build Artifacts
+      - name: Publish MAUI Windows App (Self-contained)
+        run: >
+          dotnet publish -c Release 
+          -f net9.0-windows10.0.19041.0 
+          -r win10-x64 
+          --self-contained true 
+          /p:PublishSingleFile=true 
+          /p:IncludeAllContentForSelfExtract=true
+
+      - name: Create ZIP of Published App
+        run: |
+          $publishDir = Get-ChildItem -Path . -Recurse -Directory -Filter "publish" | Where-Object { $_.FullName -like "*win10-x64*" } | Select-Object -First 1
+          Compress-Archive -Path "$($publishDir.FullName)\*" -DestinationPath "${{ github.workspace }}\maui-windows-publish.zip"
+
+      - name: Upload Published App ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: maui-windows-build
-          path: D:\a\UMD2MKV\UMD2MKV\UMD2MKV\bin\Release\net9.0-windows10.0.19041.0\win10-x64\*
+          name: maui-windows-publish
+          path: maui-windows-publish.zip
