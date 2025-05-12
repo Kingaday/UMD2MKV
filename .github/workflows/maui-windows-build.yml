@@ -1,23 +1,15 @@
-name: Build MAUI Windows App
+name: Build MAUI App for Windows and MacCatalyst
 
 on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Cache .NET workloads and NuGet
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.nuget/packages
-            ~/.dotnet
-          key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
 
       - name: Setup .NET 9
         uses: actions/setup-dotnet@v3
@@ -25,38 +17,63 @@ jobs:
           dotnet-version: '9.0.x'
           dotnet-quality: 'ga'
 
-      - name: Install only MAUI Windows workload
+      - name: Install MAUI workload (Windows)
         run: dotnet workload install maui-windows
 
-      - name: Override target frameworks for CI
-        run: |
-          echo '^<Project^>' > Directory.Build.props
-          echo '  ^<PropertyGroup^>' >> Directory.Build.props
-          echo '    ^<TargetFramework^>net9.0-windows10.0.19041.0^</TargetFramework^>' >> Directory.Build.props
-          echo '  ^</PropertyGroup^>' >> Directory.Build.props
-          echo '^</Project^>' >> Directory.Build.props
-
-      - name: Publish MAUI Windows App (Self-contained)
+      - name: Publish Windows MAUI App
         run: >
           dotnet publish UMD2MKV/UMD2MKV.csproj 
           -c Release 
+          -f net9.0-windows10.0.19041.0 
           -r win10-x64 
           --self-contained true 
           /p:PublishSingleFile=true 
           /p:IncludeAllContentForSelfExtract=true
 
-      - name: Clean up unneeded files from publish folder
+      - name: Create ZIP of Windows App
         run: |
-          $publishDir = Get-ChildItem -Path UMD2MKV\bin\Release -Recurse -Directory -Filter "publish" | Select-Object -First 1
-          Get-ChildItem -Path $publishDir.FullName -Include *.pdb,*.xml,*.json -Recurse | Remove-Item -Force
+          $publishDir = Get-ChildItem -Path UMD2MKV\bin\Release\net9.0-windows10.0.19041.0\win10-x64 -Directory -Filter "publish" | Select-Object -First 1
+          Compress-Archive -Path "$($publishDir.FullName)\*" -DestinationPath "${{ github.workspace }}\maui-windows.zip"
 
-      - name: Create ZIP of Published App
-        run: |
-          $publishDir = Get-ChildItem -Path UMD2MKV\bin\Release -Recurse -Directory -Filter "publish" | Select-Object -First 1
-          Compress-Archive -Path "$($publishDir.FullName)\*" -DestinationPath "${{ github.workspace }}\maui-windows-publish.zip"
-
-      - name: Upload Published App ZIP
+      - name: Upload Windows ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: maui-windows-publish
-          path: maui-windows-publish.zip
+          name: maui-windows
+          path: maui-windows.zip
+
+  build-mac:
+    runs-on: macos-13  # macos-latest is ok too, 13 = Ventura
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+          dotnet-quality: 'ga'
+
+      - name: Install MAUI workload (MacCatalyst)
+        run: dotnet workload install maui-maccatalyst
+
+      - name: Publish MacCatalyst MAUI App
+        run: >
+          dotnet publish UMD2MKV/UMD2MKV.csproj 
+          -c Release 
+          -f net9.0-maccatalyst 
+          -r osx-x64 
+          --self-contained true 
+          /p:PublishSingleFile=true 
+          /p:IncludeAllContentForSelfExtract=true
+
+      - name: Create ZIP of MacCatalyst App
+        run: |
+          publishDir=$(find UMD2MKV/bin/Release/net9.0-maccatalyst/osx-x64 -type d -name publish | head -n 1)
+          ditto -c -k --sequesterRsrc --keepParent "$publishDir" maui-mac.zip
+
+      - name: Upload MacCatalyst ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: maui-mac
+          path: maui-mac.zip
