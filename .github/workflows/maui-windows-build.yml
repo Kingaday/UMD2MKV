@@ -28,11 +28,18 @@ jobs:
       - name: Install only MAUI Windows workload
         run: dotnet workload install maui-windows
 
+      - name: Override target frameworks for CI
+        run: |
+          echo '^<Project^>' > Directory.Build.props
+          echo '  ^<PropertyGroup^>' >> Directory.Build.props
+          echo '    ^<TargetFramework^>net9.0-windows10.0.19041.0^</TargetFramework^>' >> Directory.Build.props
+          echo '  ^</PropertyGroup^>' >> Directory.Build.props
+          echo '^</Project^>' >> Directory.Build.props
+
       - name: Publish MAUI Windows App (Self-contained)
         run: >
           dotnet publish UMD2MKV/UMD2MKV.csproj 
           -c Release 
-          -f net9.0-windows10.0.19041.0 
           -r win10-x64 
           --self-contained true 
           /p:PublishSingleFile=true 
@@ -40,12 +47,12 @@ jobs:
 
       - name: Clean up unneeded files from publish folder
         run: |
-          $publishDir = Get-ChildItem -Path UMD2MKV\bin\Release\net9.0-windows10.0.19041.0\win10-x64 -Directory -Filter "publish" | Select-Object -First 1
+          $publishDir = Get-ChildItem -Path UMD2MKV\bin\Release -Recurse -Directory -Filter "publish" | Select-Object -First 1
           Get-ChildItem -Path $publishDir.FullName -Include *.pdb,*.xml,*.json -Recurse | Remove-Item -Force
 
       - name: Create ZIP of Published App
         run: |
-          $publishDir = Get-ChildItem -Path UMD2MKV\bin\Release\net9.0-windows10.0.19041.0\win10-x64 -Directory -Filter "publish" | Select-Object -First 1
+          $publishDir = Get-ChildItem -Path UMD2MKV\bin\Release -Recurse -Directory -Filter "publish" | Select-Object -First 1
           Compress-Archive -Path "$($publishDir.FullName)\*" -DestinationPath "${{ github.workspace }}\maui-windows-publish.zip"
 
       - name: Upload Published App ZIP
