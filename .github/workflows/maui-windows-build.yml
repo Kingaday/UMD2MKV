@@ -18,7 +18,7 @@ jobs:
           dotnet-quality: 'ga'
 
       - name: Install MAUI workload
-        run: dotnet workload install maui
+        run: dotnet workload install maui-windows
 
       - name: Restore dependencies
         run: dotnet restore
