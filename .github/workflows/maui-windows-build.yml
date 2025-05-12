@@ -11,6 +11,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Cache .NET workloads and NuGet
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.nuget/packages
+            ~/.dotnet
+          key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
+
       - name: Setup .NET 9
         uses: actions/setup-dotnet@v3
         with:
@@ -20,8 +28,11 @@ jobs:
       - name: Install only MAUI Windows workload
         run: dotnet workload install maui-windows
 
-      - name: Restore dependencies
-        run: dotnet restore UMD2MKV/UMD2MKV.csproj
+      - name: Restore Windows-specific target only
+        run: >
+          dotnet restore UMD2MKV/UMD2MKV.csproj 
+          -r win10-x64 
+          -f net9.0-windows10.0.19041.0
 
       - name: Publish MAUI Windows App (Self-contained)
         run: >
@@ -30,6 +41,7 @@ jobs:
           -f net9.0-windows10.0.19041.0 
           -r win10-x64 
           --self-contained true 
+          --no-restore 
           /p:PublishSingleFile=true 
           /p:IncludeAllContentForSelfExtract=true
 
