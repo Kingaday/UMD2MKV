@@ -28,10 +28,9 @@ jobs:
       - name: Install only MAUI Windows workload
         run: dotnet workload install maui-windows
 
-      - name: Restore dependencies for Windows only
+      - name: Restore dependencies for Windows only (runtime + framework)
         run: >
-          dotnet msbuild UMD2MKV/UMD2MKV.csproj 
-          -t:Restore 
+          dotnet restore UMD2MKV/UMD2MKV.csproj 
           -p:TargetFramework=net9.0-windows10.0.19041.0 
           -p:RuntimeIdentifier=win10-x64
 
